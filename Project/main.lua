@@ -1,9 +1,17 @@
-if arg[2] == "debug" then
-    require("lldebugger").start()
+require("Core.Systems.ErrorHandler")
+Vector2 = require("Helpers.Vector2")
+SceneManager = require("Core.Scene.SceneManager")
+
+function love.load()
+    SceneManager.Init()
 end
 
--- Environment setup
+function love.update(dt)
+end
 
--- Game setup
-local system = require("Core.System")
-system.setup()
+function love.draw()
+end
+
+function love.keypressed(key)
+
+end
