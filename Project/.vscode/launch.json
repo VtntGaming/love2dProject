@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lua-local",
+      "request": "launch",
+      "name": "Debug",
+      "program": {
+        "command": "D:\\Development\\Love2D\\Engine\\love-11.5-win64\\lovec.exe"
+      },
+      "args": [
+        ".",
+        "debug"
+      ],
+    },
+    {
+      "type": "lua-local",
+      "request": "launch",
+      "name": "Release",
+      "program": {
+        "command": "D:\\Development\\Love2D\\Engine\\love-11.5-win64\\lovec.exe"
+      },
+      "args": [
+        ".",
+      ],
+    },
+  ]
+}
