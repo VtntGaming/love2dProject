@@ -1,1 +1,1 @@
-start D:\Development\Love2D\Engine\love-11.5-win64\lovec.exe "D:\Development\Love2D\Project1"
+start ..\Engine\love-11.5-win64\lovec.exe ""

@@ -6,10 +6,10 @@
       "request": "launch",
       "name": "Debug",
       "program": {
-        "command": "D:\\Development\\Love2D\\Engine\\love-11.5-win64\\lovec.exe"
+        "command": "Engine\\love-11.5-win64\\lovec.exe"
       },
       "args": [
-        ".",
+        ".\\Project",
         "debug"
       ],
     },
@@ -18,10 +18,10 @@
       "request": "launch",
       "name": "Release",
       "program": {
-        "command": "D:\\Development\\Love2D\\Engine\\love-11.5-win64\\lovec.exe"
+        "command": "Engine\\love-11.5-win64\\lovec.exe"
       },
       "args": [
-        ".",
+        ".\\Project",
       ],
     },
   ]
