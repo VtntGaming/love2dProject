@@ -2,6 +2,9 @@ local Vector2 = {}
 
 local function v2Math(v1, v2, method)
     if type(v2) == "number" then
+        if method == "add" or "sub" then
+            error(string.format("Could not apply method: %s of number to vector2", method))
+        end
         v2 = Vector2.new(v2, v2)
     end
     assert(v2 and v2.__type == "Vector2", "Must be a vector2")
@@ -19,6 +22,8 @@ local function v2Math(v1, v2, method)
     end
 end
 
+-- Constructor
+
 function Vector2.new(x, y)
     if not tonumber(x) then
         x = 0
@@ -28,10 +33,14 @@ function Vector2.new(x, y)
         y = 0
     end
 
+    local magnitude = math.sqrt(x ^ 2 + y ^ 2)
+
     local init = {
         __type = "Vector2",
         X = x,
-        Y = y
+        Y = y,
+        Magnitude = magnitude,
+        Unit = Vector2.new(x/magnitude, y/magnitude)
     }
 
     local metatableSetup = {
@@ -56,10 +65,46 @@ function Vector2.new(x, y)
     return setmetatable(init, metatableSetup)
 end
 
-function Vector2:Magniture(v2)
-    assert(v2 and v2.__type == "Vector2", "Must be a vector2")
+Vector2.one = Vector2.new(1, 1)
+Vector2.zero = Vector2.new(0, 0)
+Vector2.xAxis = Vector2.new(1, 0)
+Vector2.yAxis = Vector2.new(0, 1)
 
+-- Method
+function Vector2:Abs()
+    return Vector2.new(math.abs(self.X), math.abs(self.Y))
+end
 
+function Vector2:Cell()
+    return Vector2.new(math.ceil(self.X), math.ceil(self.Y))
+end
+
+function Vector2:Floor()
+    return Vector2.new(math.floor(self.X), math.floor(self.Y))
+end
+
+function Vector2.max(...)
+    local maxX = -math.huge
+    local maxY = -math.huge
+    for _, v in ipairs(table.unpack(...)) do
+       assert(v.__type == "Vector2", "Must be a vector2")
+       maxX = math.max(maxX, v.X)
+       maxY = math.max(maxY, v.Y)
+    end
+
+    return Vector2.new(maxX, maxY)
+end
+
+function Vector2.min(...)
+    local minX = math.huge
+    local minY = math.huge
+    for _, v in ipairs(table.unpack(...)) do
+       assert(v.__type == "Vector2", "Must be a vector2")
+       minX = math.min(minX, v.X)
+       minY = math.min(minY, v.Y)
+    end
+
+    return Vector2.new(minX, minY)
 end
 
 getfenv()["Vector2"] = Vector2
