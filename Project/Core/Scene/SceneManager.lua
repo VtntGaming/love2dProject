@@ -14,7 +14,7 @@ function SceneManger.Init()
         local itemInfo = love.filesystem.getInfo(sceneLocation)
         local requirementScriptInfo = love.filesystem.getInfo(requirementScriptPath..".lua")
         if itemInfo and requirementScriptInfo and itemInfo.type == "directory" and requirementScriptInfo.type == "file" then
-            require(requirementScriptPath)
+            require(requirementScriptPath).Init()
         end
     end
 end

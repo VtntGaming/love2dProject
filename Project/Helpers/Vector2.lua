@@ -1,5 +1,10 @@
+---@class Vector2
 local Vector2 = {}
 
+---@param v1 number | Vector2
+---@param v2 number | Vector2
+---@param method string
+---@return Vector2?
 local function v2Math(v1, v2, method)
     if type(v2) == "number" then
         if method == "add" or "sub" then
@@ -35,16 +40,26 @@ function Vector2.new(x, y)
 
     local magnitude = math.sqrt(x ^ 2 + y ^ 2)
 
+    ---@class Vector2
     local init = {
         __type = "Vector2",
         X = x,
         Y = y,
-        Magnitude = magnitude,
-        Unit = Vector2.new(x/magnitude, y/magnitude)
+        Magnitude = magnitude
     }
 
     local metatableSetup = {
-        __index = Vector2,
+        __index = function(self, key)
+            if key == "Unit" then
+                if self.Magnitude == 0 then
+                    return Vector2.new(0, 0)
+                else
+                    return Vector2.new(x/magnitude, y/magnitude)
+                end
+            end
+                
+            return Vector2[key]
+        end,
         __add = function(v2)
             return v2Math(init, v2, "add")
         end,
@@ -57,7 +72,7 @@ function Vector2.new(x, y)
         __div = function(v2)
             return v2Math(init, v2, "div")
         end,
-        __tostring = function ()
+        __tostring = function()
             return string.format("Vector2: {%f, %f}", init.X, init.Y)
         end
     }
