@@ -22,21 +22,8 @@ local function getRenderPosition(pos, size, anchor)
     local absSize = udim2ToVector2(size)
     local absPos = udim2ToVector2(pos)
 
-    return absPos - absSize * anchor
-end
-
-local CAN_WRITE = {
-    "Position", "Size", "AnchorPoint"
-}
-
-local function findForTable(t, k)
-    for i, v in ipairs(t) do
-        if v == k then
-            return i
-        end
-    end
-
-    return nil
+    local renderPos = absPos - absSize * anchor
+    return renderPos
 end
 
 function UIComponent.new()
@@ -44,34 +31,38 @@ function UIComponent.new()
     ---@class UIComponent_private: Instance
     ---@field AbsolutePosition Vector2
     ---@field AbsoluteSize Vector2
+    
+    local __class = "UIComponent"
+    local __subclass = prototype.__subclass
+    __subclass[#__subclass+1] = __class
 
     ---@class UIComponent: UIComponent_private
     local init = {
-        __class = "UIComponent",
+        __class = __class,
+        __subclass = __subclass,
+        Name = "UIComponent",
         Position = UDim2.fromScale(0, 0),
         Size = UDim2.fromOffset(100, 100),
-        AnchorPoint = Vector2.new(0, 0)
+        AnchorPoint = Vector2.new(0, 0),
+        BackgroundColor = Color3.new(1, 1, 1),
+        BackgroundOpacity = 1
     }
 
-    local metatableSetup = {
-        __index = function(_, key)
-            if key == "AbsolutePosition" then
-                return getRenderPosition(init.Position, init.Size, init.AnchorPoint)
-            elseif key == "AbsoluteSize" then
-                return udim2ToVector2(init.Size)
-            end
+    local metatableSetup = {}
+    local originIndex = getmetatable(prototype).__index
+    metatableSetup.__tostring = getmetatable(prototype).__tostring
 
-            if UIComponent[key] then
-                return UIComponent[key]
-            else
-                return prototype[key]
-            end
-        end,
-        __newindex = function(self, key, value)
-            assert(findForTable(CAN_WRITE, key), "Cannot write a read-only key to class")
-            rawset(self, key, value)
+    metatableSetup.__index = function(self, key)
+        if key == "AbsolutePosition" then
+            return getRenderPosition(self.Position, self.Size, self.AnchorPoint)
+        elseif key == "AbsoluteSize" then
+            return udim2ToVector2(self.Size)
+        elseif UIComponent[key] then
+            return UIComponent[key]
+        else
+            return originIndex(self, key) or prototype[key]
         end
-    }
+    end
     
     return setmetatable(init, metatableSetup)
 end

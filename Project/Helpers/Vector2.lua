@@ -15,13 +15,13 @@ local function v2Math(v1, v2, method)
     assert(v2 and v2.__type == "Vector2", "Must be a vector2")
 
     if method == "add" then
-        return Vector2.new(v1.X + v2.X, v1.X + v2.Y)
+        return Vector2.new(v1.X + v2.X, v1.Y + v2.Y)
     elseif method == "sub" then        
-        return Vector2.new(v1.X - v2.X, v1.X - v2.Y)
+        return Vector2.new(v1.X - v2.X, v1.Y - v2.Y)
     elseif method == "mul" then
-        return Vector2.new(v1.X * v2.X, v1.X * v2.Y)
+        return Vector2.new(v1.X * v2.X, v1.Y * v2.Y)
     elseif method == "div" then
-        return Vector2.new(v1.X / v2.X, v1.X / v2.Y)
+        return Vector2.new(v1.X / v2.X, v1.Y / v2.Y)
     else
         error("Invalid or unsupported method")
     end
@@ -60,17 +60,17 @@ function Vector2.new(x, y)
                 
             return Vector2[key]
         end,
-        __add = function(v2)
-            return v2Math(init, v2, "add")
+        __add = function(self, v2)
+            return v2Math(self, v2, "add")
         end,
-        __sub = function(v2)
-            return v2Math(init, v2, "sub")
+        __sub = function(self, v2)
+            return v2Math(self, v2, "sub")
         end,
-        __mul = function(v2)
-            return v2Math(init, v2, "mul")
+        __mul = function(self, v2)
+            return v2Math(self, v2, "mul")
         end,
-        __div = function(v2)
-            return v2Math(init, v2, "div")
+        __div = function(self, v2)
+            return v2Math(self, v2, "div")
         end,
         __tostring = function()
             return string.format("Vector2: {%f, %f}", init.X, init.Y)

@@ -1,3 +1,4 @@
+---@class Scene
 local Scene = {}
 
 function Scene.new(sceneName)

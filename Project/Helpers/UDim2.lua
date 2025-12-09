@@ -17,24 +17,24 @@ function UDim2.fromUDim(u1, u2)
 
     local metatableSetup = {
         __index = UDim2,
-        __add = function(u2)
+        __add = function(self, u2)
            assert(u2.__type == "UDim2", "Must be UDim2")
 
-           local x = init.X + u2.X
-           local y = init.Y + u2.Y
+           local x = self.X + u2.X
+           local y = self.Y + u2.Y
 
            return UDim2.fromUDim(x, y)
         end,
-        __sub = function(u2)            
+        __sub = function(self, u2)            
            assert(u2.__type == "UDim2", "Must be UDim2")
 
-           local x = init.X - u2.X
-           local y = init.Y - u2.Y
+           local x = self.X - u2.X
+           local y = self.Y - u2.Y
 
            return UDim2.fromUDim(x, y)
         end,
-        __tostring = function()
-            return string.format("UDim2: {{%f, %f}, {%f, %f}}", init.X.Scale, init.X.Offset, init.Y.Scale, init.Y.Offset)
+        __tostring = function(self)
+            return string.format("UDim2: {{%f, %f}, {%f, %f}}", self.X.Scale, self.X.Offset, self.Y.Scale, self.Y.Offset)
         end
     }
 
